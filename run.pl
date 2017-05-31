@@ -4,20 +4,8 @@ use strict;
 use warnings; 
 use Time::HiRes qw(usleep);
 use Parser;
-use Redis;
+use LocalIO;
 
-my $redis = Redis->new;
-
-sub plc_read {
-    return $redis->get(shift) // die "Can't get $!";
-}
-
-sub plc_write {
-    my ($key, $val) = @_;
-    $redis->set($key => $val) or die "Can't set $!";
-}
-
-my $loop_flag = 1;
 my $register;
 
 Parser::parse_file($ARGV[0]);
@@ -34,5 +22,3 @@ while(1) {
 }
 
 close $step or die "$step: $!";
-
-$redis->quit;

@@ -7,20 +7,20 @@ sub parse {
     my $instruction = shift;
     return $instruction if $instruction =~ /^\s+$/;
     return $instruction if $instruction =~ s/LD\s(\d+)/\$register = $1;/;
-    return $instruction if $instruction =~ s/LD\s(%\S+)/\$register = plc_read("$1");/;
-    return $instruction if $instruction =~ s/ST\s(%\S+)/plc_write("$1", \$register);/;
+    return $instruction if $instruction =~ s/LD\s(%\S+)/\$register = LocalIO::read("$1");/;
+    return $instruction if $instruction =~ s/ST\s(%\S+)/LocalIO::write("$1", \$register);/;
     return $instruction if $instruction =~ s/AND\s(\d+)/\$register = \$register && $1;/;
-    return $instruction if $instruction =~ s/AND\s(%\S+)/\$register = \$register && plc_read("$1");/;
+    return $instruction if $instruction =~ s/AND\s(%\S+)/\$register = \$register && LocalIO::read("$1");/;
     return $instruction if $instruction =~ s/OR\s(\d+)/\$register = \$register || $1;/;
-    return $instruction if $instruction =~ s/OR\s(%\S+)/\$register = \$register || plc_read("$1");/;
+    return $instruction if $instruction =~ s/OR\s(%\S+)/\$register = \$register || LocalIO::read("$1");/;
     return $instruction if $instruction =~ s/ADD\s(\d+)/\$register = \$register += $1;/;
-    return $instruction if $instruction =~ s/ADD\s(%\S+)/\$register = \$register += plc_read("$1");/;
+    return $instruction if $instruction =~ s/ADD\s(%\S+)/\$register = \$register += LocalIO::read("$1");/;
     return $instruction if $instruction =~ s/SUB\s(\d+)/\$register = \$register -= $1;/;
-    return $instruction if $instruction =~ s/SUB\s(%\S+)/\$register = \$register -= plc_read("$1");/;
+    return $instruction if $instruction =~ s/SUB\s(%\S+)/\$register = \$register -= LocalIO::read("$1");/;
     return $instruction if $instruction =~ s/MUL\s(\d+)/\$register = \$register *= $1;/;
-    return $instruction if $instruction =~ s/MUL\s(%\S+)/\$register = \$register *= plc_read("$1");/;
+    return $instruction if $instruction =~ s/MUL\s(%\S+)/\$register = \$register *= LocalIO::read("$1");/;
     return $instruction if $instruction =~ s/DIV\s(\d+)/\$register = \$register \/= $1;/;
-    return $instruction if $instruction =~ s/DIV\s(%\S+)/\$register = \$register \/= plc_read("$1");/;
+    return $instruction if $instruction =~ s/DIV\s(%\S+)/\$register = \$register \/= LocalIO::read("$1");/;
     die "Can't parse $instruction";
 }
 
