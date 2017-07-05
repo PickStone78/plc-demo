@@ -12,6 +12,7 @@ sub read {
 
 sub write {
     my ($key, $val) = @_;
+    print "$key, $val\n";
     $redis->set($key => $val) or die "Can't set $!";
 }
 
